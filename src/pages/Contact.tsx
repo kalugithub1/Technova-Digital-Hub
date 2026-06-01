@@ -54,7 +54,7 @@ function Hero() {
         style={{
           position: "absolute",
           inset: 0,
-          background: "rgba(11,31,58,.55)",
+          background: "rgba(11,31,58,.45)",
         }}
       />
       <div

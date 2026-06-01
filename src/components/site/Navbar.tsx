@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import logo from "@/assets/site/organization_logo.jpg";
+import logo from "@/assets/site/organization_logo.png";
 
 const links = [
   { to: "/about", label: "About Us" },
@@ -46,17 +46,20 @@ export default function Navbar() {
             textDecoration: "none",
           }}
         >
+          {/* Desktop/main navbar logo */}
           <img
             src={logo}
             alt="Technova Digital Hub logo"
             style={{
               height: "2.5rem",
               width: "2.5rem",
-              borderRadius: "",
+              borderRadius: "9999px",
               objectFit: "cover",
+              overflow: "hidden",
+              display: "block",
+              flexShrink: 0,
             }}
           />
-
           <div style={{ lineHeight: 1.2 }}>
             <div
               style={{
@@ -156,6 +159,7 @@ export default function Navbar() {
                 textDecoration: "none",
               }}
             >
+              {/* Mobile menu logo */}
               <img
                 src={logo}
                 alt=""
@@ -164,6 +168,9 @@ export default function Navbar() {
                   width: "2.5rem",
                   borderRadius: "9999px",
                   objectFit: "cover",
+                  overflow: "hidden",
+                  display: "block",
+                  flexShrink: 0,
                 }}
               />
               <div
