@@ -130,6 +130,33 @@ function OriginStory() {
         .origin-text { opacity:0; transform:translateX(-56px); transition:opacity .75s cubic-bezier(0.22,1,0.36,1), transform .75s cubic-bezier(0.22,1,0.36,1); }
         .origin-image { opacity:0; transform:translateX(56px); transition:opacity .75s cubic-bezier(0.22,1,0.36,1) .15s, transform .75s cubic-bezier(0.22,1,0.36,1) .15s; }
         [data-visible="true"] .origin-text, [data-visible="true"] .origin-image { opacity:1; transform:translateX(0); }
+        
+        /* Mobile fixes for the stat cards overlaying the image */
+        .stat-overlay-card {
+          width: 100%;
+          max-width: 100% !important;
+          align-self: center !important;
+          padding: 1rem !important;
+        }
+        .stat-number {
+          font-size: 1.75rem !important;
+        }
+        
+        /* Desktop styles restored */
+        @media(min-width: 480px) {
+          .stat-overlay-card {
+            max-width: 18rem !important;
+            padding: 1.25rem !important;
+          }
+          .stat-number {
+            font-size: 2.5rem !important;
+          }
+          .stat-align-start { align-self: flex-start !important; }
+          .stat-align-end { align-self: flex-end !important; }
+        }
+
+        .origin-grid { grid-template-columns: 1fr; }
+        @media(min-width: 1024px) { .origin-grid { grid-template-columns: 1fr 1fr; } }
       `}</style>
       <div
         ref={ref}
@@ -212,38 +239,35 @@ function OriginStory() {
               position: "relative",
               zIndex: 10,
               height: "100%",
-              padding: "2rem",
+              padding:
+                "1.5rem" /* slightly decreased parent padding on mobile */,
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
+              gap: "1rem" /* prevents cards from mashing together if space runs tight */,
             }}
           >
             {[
-              [
-                "200,000+",
-                "Refugees in Kakuma and Kalobeyei region",
-                "flex-start",
-              ],
-              ["75%", "Are youth aged 15–30", "flex-end"],
-              ["3%", "Access higher education globally", "flex-start"],
+              ["200,000+", "Refugees in Kakuma and Kalobeyei region", "start"],
+              ["75%", "Are youth aged 15-30", "end"],
+              ["3%", "Access higher education globally", "start"],
             ].map(([v, l, a]) => (
               <div
                 key={v}
+                className={`stat-overlay-card stat-align-${a}`}
                 style={{
-                  alignSelf: a as any,
-                  maxWidth: "18rem",
                   borderRadius: "1rem",
                   background: "rgba(255,255,255,.95)",
                   backdropFilter: "blur(8px)",
-                  padding: "1.25rem",
                   boxShadow: "0 20px 25px -5px rgba(0,0,0,.2)",
                 }}
               >
                 <div
+                  className="stat-number"
                   style={{
                     fontFamily: '"DM Serif Display",serif',
-                    fontSize: "2.5rem",
                     color: "var(--navy)",
+                    lineHeight: 1.1,
                   }}
                 >
                   {v}
@@ -262,7 +286,6 @@ function OriginStory() {
           </div>
         </div>
       </div>
-      <style>{`.origin-grid{grid-template-columns:1fr}@media(min-width:1024px){.origin-grid{grid-template-columns:1fr 1fr}}`}</style>
     </section>
   );
 }
@@ -607,7 +630,14 @@ function Timeline() {
           >
             Our journey
           </span>
-          <h2 style={{ marginTop: "0.75rem" }}>
+          <h2
+            style={{
+              marginTop: "0.75rem",
+              fontSize: "1.5rem" /* Shrinks the text on mobile */,
+              lineHeight: "2rem" /* Fixes the spacing between lines */,
+            }}
+            className="md:!text-3xl" /* Restores a grand headline size on desktop */
+          >
             From Vision to Reality, Building the Hub
           </h2>
         </div>
@@ -777,7 +807,14 @@ function TeamGrid() {
           >
             Our team
           </span>
-          <h2 style={{ marginTop: "0.75rem" }}>
+          <h2
+            style={{
+              marginTop: "0.75rem",
+              fontSize: "1.5rem",
+              lineHeight: "2rem",
+            }}
+            className="md:!text-3xl"
+          >
             Driven by lived experience and academic excellence
           </h2>
           <p
@@ -878,7 +915,27 @@ function TeamGrid() {
             </div>
           ))}
         </div>
-        <style>{`.team-about-grid{grid-template-columns:repeat(2,1fr)}@media(min-width:640px){.team-about-grid{grid-template-columns:repeat(3,1fr)}}@media(min-width:1024px){.team-about-grid{grid-template-columns:repeat(4,1fr)}}`}</style>
+        <style>{`
+  /* Start with 1 column for mobile viewports */
+  .team-about-grid { 
+    grid-template-columns: 1fr; 
+  }
+  
+  /* 2 columns for small tablets and large phones */
+  @media(min-width: 480px) { 
+    .team-about-grid { grid-template-columns: repeat(2, 1fr); } 
+  }
+  
+  /* 3 columns for tablets */
+  @media(min-width: 768px) { 
+    .team-about-grid { grid-template-columns: repeat(3, 1fr); } 
+  }
+  
+  /* 4 columns for desktops */
+  @media(min-width: 1024px) { 
+    .team-about-grid { grid-template-columns: repeat(4, 1fr); } 
+  }
+`}</style>
       </div>
     </section>
   );
