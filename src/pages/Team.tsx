@@ -241,7 +241,7 @@ const TEAM = [
     initials: "DO",
     avatarBg: "#154360",
     image: deo_img,
-    bio: "Deogracia oversees curriculum development, ensures all training programs meet quality standards, and manages official reporting to stakeholders. She also leads the recruitment process for trainers and beneficiaries, keeping the hub's operations structured and accountable.",
+    bio: "Deogracia oversees curriculum development, ensures all training programs meet quality standards, and manages official reporting to stakeholders. He also leads the recruitment process for trainers and beneficiaries, keeping the hub's operations structured and accountable.",
   },
   {
     name: "Daniel Deng",

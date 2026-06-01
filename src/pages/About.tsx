@@ -633,8 +633,8 @@ function Timeline() {
           <h2
             style={{
               marginTop: "0.75rem",
-              fontSize: "1.5rem" /* Shrinks the text on mobile */,
-              lineHeight: "2rem" /* Fixes the spacing between lines */,
+              fontSize: "1.5rem",
+              lineHeight: "2rem",
             }}
             className="md:!text-3xl" /* Restores a grand headline size on desktop */
           >
