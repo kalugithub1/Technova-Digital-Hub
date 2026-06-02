@@ -9,6 +9,8 @@ import rashid_img from "@/assets/site/team_images/rashid.jpg";
 import dut_img from "@/assets/site/team_images/dut.jpg";
 import prisca_img from "@/assets/site/team_images/prisca.jpg";
 import ezekiel_img from "@/assets/site/team_images/ezekiel.jpg";
+import iranzi_img from "@/assets/site/team_images/innocent.jpg";
+
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 export default function Team() {
@@ -184,7 +186,7 @@ const TEAM = [
     role: "Chairperson & Founder",
     initials: "II",
     avatarBg: "#0B1F3A",
-    image: "",
+    image: iranzi_img,
     bio: "Iranzi leads Technova Digital Hub's overall strategy, funding relationships, and external partnerships. A former secondary school teacher in Kakuma, he serves as the organization's primary spokesperson and the driving force behind transforming a shared dream into a functioning learning center.",
   },
   {
