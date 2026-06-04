@@ -18,6 +18,7 @@ import rashid_img from "@/assets/site/team_images/rashid.jpg";
 import dut_img from "@/assets/site/team_images/dut.jpg";
 import prisca_img from "@/assets/site/team_images/prisca.jpg";
 import ezekiel_img from "@/assets/site/team_images/ezekiel.jpg";
+import iranzi_img from "@/assets/site/team_images/innocent.jpg";
 import sdgBg from "@/assets/site/image12.jpg";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
@@ -239,12 +240,11 @@ function OriginStory() {
               position: "relative",
               zIndex: 10,
               height: "100%",
-              padding:
-                "1.5rem" /* slightly decreased parent padding on mobile */,
+              padding: "1.5rem",
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
-              gap: "1rem" /* prevents cards from mashing together if space runs tight */,
+              gap: "1rem",
             }}
           >
             {[
@@ -750,7 +750,7 @@ function Timeline() {
 }
 
 const TEAM = [
-  { name: "Iranzi Innocent", role: "Chairperson & Founder", image: "" },
+  { name: "Iranzi Innocent", role: "Chairperson & Founder", image: iranzi_img },
   { name: "Athok Chol", role: "Vice Chairperson", image: "" },
   { name: "Abut Seleman Tiso", role: "Head of Logistics", image: "" },
   {

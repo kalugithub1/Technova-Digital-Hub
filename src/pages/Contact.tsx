@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { MapPin, Mail, Phone, Send, CheckCircle2 } from "lucide-react";
+import {
+  MapPin,
+  Mail,
+  Phone,
+  Send,
+  CheckCircle2,
+  AlertCircle,
+} from "lucide-react";
 import { FaFacebookF, FaLinkedinIn, FaInstagram } from "react-icons/fa";
 import heroImg from "@/assets/site/team_img3.jpg";
 import { z } from "zod";
@@ -280,11 +287,17 @@ function ContactDetails() {
 
 function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [serverError, setServerError] = useState<string | null>(null);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const fd = new FormData(e.currentTarget);
+    setServerError(null);
+    setSubmitted(false);
+
+    const formElement = e.currentTarget;
+    const fd = new FormData(formElement);
     const payload = {
       firstName: String(fd.get("firstName") ?? ""),
       lastName: String(fd.get("lastName") ?? ""),
@@ -293,6 +306,7 @@ function ContactForm() {
       subject: String(fd.get("subject") ?? ""),
       message: String(fd.get("message") ?? ""),
     };
+
     const result = schema.safeParse(payload);
     if (!result.success) {
       const next: Record<string, string> = {};
@@ -301,9 +315,35 @@ function ContactForm() {
       setErrors(next);
       return;
     }
+
     setErrors({});
-    setSubmitted(true);
-    e.currentTarget.reset();
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("https://formspree.io/f/xwvjezra", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+        },
+        body: fd, // You can pass the FormData object directly to Formspree
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+        formElement.reset();
+      } else {
+        const data = await response.json();
+        if (data.errors) {
+          setServerError(data.errors.map((err: any) => err.message).join(", "));
+        } else {
+          setServerError("Something went wrong. Please try again later.");
+        }
+      }
+    } catch (err) {
+      setServerError("Network error. Please check your internet connection.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const inputStyle = {
@@ -319,6 +359,123 @@ function ContactForm() {
     outline: "none",
   };
   const labelStyle = { fontSize: "0.875rem", fontWeight: 600, color: "#000" };
+  <style>{`
+  @keyframes successFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+`}</style>;
+  if (submitted) {
+    return (
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: "1.25rem",
+          boxShadow: "0 20px 25px -5px rgba(0,0,0,.1)",
+          border: "1px solid rgba(0,0,0,.05)",
+          padding: "4rem 2rem",
+          textAlign: "center",
+          animation: "successFadeIn .5s ease",
+        }}
+      >
+        <style>{`
+        @keyframes successFadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(16px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
+
+        <div
+          style={{
+            width: "90px",
+            height: "90px",
+            margin: "0 auto 1.5rem",
+            borderRadius: "50%",
+            background: "#22c55e",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: "0 12px 30px rgba(34,197,94,.25)",
+          }}
+        >
+          <CheckCircle2 size={48} color="#fff" />
+        </div>
+
+        <h3
+          style={{
+            fontFamily: '"DM Serif Display", serif',
+            color: "var(--navy)",
+            fontSize: "2rem",
+            marginBottom: "1rem",
+          }}
+        >
+          Thank You!
+        </h3>
+
+        <p
+          style={{
+            maxWidth: "520px",
+            margin: "0 auto",
+            color: "#4b5563",
+            lineHeight: 1.8,
+            fontSize: "1rem",
+          }}
+        >
+          Your message has been successfully submitted.
+          <br />A member of the <strong>Technova Digital Hub</strong> team will
+          review your inquiry and respond within <strong>24–48 hours</strong>.
+        </p>
+
+        <button
+          type="button"
+          onClick={() => {
+            setSubmitted(false);
+            setErrors({});
+            setServerError(null);
+          }}
+          style={{
+            marginTop: "2rem",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: ".5rem",
+            borderRadius: "9999px",
+            background: "var(--brand-blue)",
+            color: "#fff",
+            fontWeight: 600,
+            padding: "0.9rem 1.75rem",
+            border: "none",
+            cursor: "pointer",
+            fontFamily: "Sora,sans-serif",
+            fontSize: "1rem",
+            transition: "all .2s ease",
+          }}
+          onMouseEnter={(e) => {
+            const el = e.currentTarget;
+            el.style.opacity = ".9";
+          }}
+          onMouseLeave={(e) => {
+            const el = e.currentTarget;
+            el.style.opacity = "1";
+          }}
+        >
+          Send Another Message
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -343,7 +500,7 @@ function ContactForm() {
         For course inquiries, select <strong>"Course Inquiry"</strong> below.
       </p>
 
-      {submitted && (
+      {serverError && (
         <div
           style={{
             marginTop: "1.25rem",
@@ -352,22 +509,21 @@ function ContactForm() {
             gap: "0.75rem",
             borderRadius: "0.75rem",
             padding: "1rem",
-            background: "#FEF9E6",
-            border: "1px solid #F5C842",
+            background: "#FCE8E6",
+            border: "1px solid #EA4335",
           }}
         >
-          <CheckCircle2
+          <AlertCircle
             size={20}
             style={{
-              color: "var(--navy)",
+              color: "#EA4335",
               flexShrink: 0,
               marginTop: "0.125rem",
             }}
           />
           <div style={{ color: "#000" }}>
-            <div style={{ fontWeight: 600 }}>Thank you!</div>
-            Your message has been received. We'll get back to you within 48
-            hours.
+            <div style={{ fontWeight: 600 }}>Submission Failed</div>
+            {serverError}
           </div>
         </div>
       )}
@@ -469,6 +625,7 @@ function ContactForm() {
         </div>
         <button
           type="submit"
+          disabled={isSubmitting}
           style={{
             width: "100%",
             display: "inline-flex",
@@ -483,17 +640,20 @@ function ContactForm() {
             fontFamily: "Sora,sans-serif",
             fontSize: "1rem",
             border: "none",
-            cursor: "pointer",
+            cursor: isSubmitting ? "not-allowed" : "pointer",
+            opacity: isSubmitting ? 0.7 : 1,
             transition: "opacity .2s",
           }}
-          onMouseEnter={(e) =>
-            ((e.currentTarget as HTMLElement).style.opacity = ".9")
-          }
-          onMouseLeave={(e) =>
-            ((e.currentTarget as HTMLElement).style.opacity = "1")
-          }
+          onMouseEnter={(e) => {
+            if (!isSubmitting)
+              (e.currentTarget as HTMLElement).style.opacity = ".9";
+          }}
+          onMouseLeave={(e) => {
+            if (!isSubmitting)
+              (e.currentTarget as HTMLElement).style.opacity = "1";
+          }}
         >
-          Send Message <Send size={16} />
+          {isSubmitting ? "Sending..." : "Send Message"} <Send size={16} />
         </button>
       </form>
     </div>
