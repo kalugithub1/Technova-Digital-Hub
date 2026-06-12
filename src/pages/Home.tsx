@@ -16,12 +16,16 @@ import {
   Handshake,
   HeartHandshake,
   MapPin,
+  Globe,
+  Building2,
+  University,
 } from "lucide-react";
 import hubBg from "@/assets/site/room_with_fence6.jpg";
 import construction from "@/assets/site/construction1.jpeg";
 import tier1Img from "@/assets/site/image1.jpg";
 import tier2Img from "@/assets/site/image3.jpg";
 import tier3Img from "@/assets/site/image2.jpg";
+import dbc from "@/assets/site/partners_logos/DBC_logo.jpg";
 
 function useScrollFadeUp(threshold = 0.2) {
   const ref = useRef<HTMLElement>(null);
@@ -92,10 +96,13 @@ export default function Home() {
       <AboutPreview />
       <ProgramsPreview />
       <ImpactNumbers />
+      <PartnersSection />
       <SupportStrip />
     </>
   );
 }
+
+// ─── Hero ────────────────────────────────────────────────────────────────────
 
 function Hero() {
   return (
@@ -388,6 +395,8 @@ function StatCard({
   );
 }
 
+// ─── Mission / Vision ─────────────────────────────────────────────────────────
+
 function MissionVisionSection() {
   const sectionRef = useScrollFadeUp();
   return (
@@ -518,6 +527,8 @@ function MissionVisionSection() {
     </section>
   );
 }
+
+// ─── About Preview ────────────────────────────────────────────────────────────
 
 const values = [
   { title: "Digital Inclusion", desc: "Skills for every refugee" },
@@ -761,6 +772,8 @@ function AboutPreview() {
   );
 }
 
+// ─── Programs Preview ─────────────────────────────────────────────────────────
+
 function ProgramsPreview() {
   const sectionRef = useScrollFadeUp(0.1);
   return (
@@ -888,7 +901,6 @@ function ProgramsPreview() {
             </h3>
           </div>
 
-          {/* Mobile: column, Desktop: row */}
           <style>{`
             .pathway-wrapper {
               display: flex;
@@ -1153,7 +1165,6 @@ function PathStep({
 function PathArrow() {
   return (
     <>
-      {/* Down arrow — mobile only */}
       <div
         className="arrow-down"
         style={{
@@ -1164,7 +1175,6 @@ function PathArrow() {
       >
         <ArrowDown size={24} style={{ color: "rgba(26,111,212,.6)" }} />
       </div>
-      {/* Right arrow — desktop only */}
       <div
         className="arrow-right"
         style={{ alignItems: "center", justifyContent: "center" }}
@@ -1174,6 +1184,8 @@ function PathArrow() {
     </>
   );
 }
+
+// ─── Impact Numbers ───────────────────────────────────────────────────────────
 
 function ImpactNumbers() {
   const sectionRef = useScrollFadeUp(0.15);
@@ -1389,6 +1401,335 @@ function ImpactNumbers() {
     </section>
   );
 }
+
+// ─── Partners Section (NEW) ───────────────────────────────────────────────────
+
+const PARTNER_TYPES = [
+  {
+    Icon: Globe,
+    label: "UN Agencies & INGOs",
+    desc: "UNHCR, IRC, NRC, and other international bodies supporting refugee programming.",
+  },
+  {
+    Icon: Building2,
+    label: "Corporate Partners",
+    desc: "Tech companies and social enterprises co-funding training cohorts and internships.",
+  },
+  {
+    Icon: University,
+    label: "Academic Institutions",
+    desc: "Universities and online learning platforms providing curriculum and certification.",
+  },
+];
+
+// Placeholder partner logos rendered as styled text tiles
+const PARTNER_PLACEHOLDERS = [
+  { name: "DBC", logo: dbc },
+  { name: "DBC", logo: dbc },
+  { name: "DBC", logo: dbc },
+  { name: "DBC", logo: dbc },
+  { name: "DBC", logo: dbc },
+];
+
+function PartnersSection() {
+  const sectionRef = useScrollFadeUp(0.1);
+  return (
+    <section
+      ref={sectionRef}
+      style={{
+        paddingBlock: "6rem",
+        background: "var(--off-white)",
+        overflow: "hidden",
+        position: "relative",
+      }}
+    >
+      <style>{`
+        ${FADE_UP_STYLE}
+        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        .partner-marquee-track { display:flex; gap:1rem; animation: marquee 28s linear infinite; width: max-content; }
+        .partner-marquee-track:hover { animation-play-state: paused; }
+      `}</style>
+
+      {/* Subtle dot pattern */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          opacity: 0.035,
+          backgroundImage:
+            "radial-gradient(circle at 1px 1px,#0B1F3A 1px,transparent 0)",
+          backgroundSize: "24px 24px",
+          pointerEvents: "none",
+        }}
+      />
+
+      <div className="container-page" style={{ position: "relative" }}>
+        {/* Header */}
+        <div
+          className="fade-up"
+          style={{
+            animationDelay: "0ms",
+            textAlign: "center",
+            maxWidth: "42rem",
+            margin: "0 auto",
+          }}
+        >
+          <div
+            style={{
+              color: "var(--brand-blue)",
+              fontSize: "0.75rem",
+              textTransform: "uppercase",
+              letterSpacing: "0.25em",
+              fontWeight: 600,
+            }}
+          >
+            Our Network
+          </div>
+          <h2 style={{ marginTop: "0.75rem" }}>
+            Backed by Partners Who Believe in Our Mission
+          </h2>
+          <p
+            style={{
+              marginTop: "1rem",
+              fontSize: "1.0625rem",
+              lineHeight: 1.6,
+            }}
+          >
+            We will work alongside humanitarian organisations, technology
+            companies, and academic institutions to deliver training that meets
+            international standards, inside a refugee settlement.
+          </p>
+        </div>
+
+        {/* Partner type cards */}
+        <div
+          style={{ marginTop: "3.5rem", display: "grid", gap: "1.25rem" }}
+          className="partner-types-grid"
+        >
+          {PARTNER_TYPES.map(({ Icon, label, desc }, i) => (
+            <div
+              key={label}
+              className="fade-up"
+              style={{ animationDelay: `${(i + 1) * 150}ms` }}
+            >
+              <div
+                style={{
+                  background: "#fff",
+                  borderRadius: "1rem",
+                  padding: "1.75rem",
+                  border: "1px solid rgba(11,31,58,.1)",
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "1rem",
+                  transition: "border-color .2s, transform .2s, box-shadow .2s",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor =
+                    "var(--amber)";
+                  (e.currentTarget as HTMLElement).style.transform =
+                    "translateY(-3px)";
+                  (e.currentTarget as HTMLElement).style.boxShadow =
+                    "0 12px 28px -8px rgba(0,0,0,.12)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor =
+                    "rgba(11,31,58,.1)";
+                  (e.currentTarget as HTMLElement).style.transform =
+                    "translateY(0)";
+                  (e.currentTarget as HTMLElement).style.boxShadow = "none";
+                }}
+              >
+                <div
+                  style={{
+                    height: "3rem",
+                    width: "3rem",
+                    borderRadius: "0.875rem",
+                    background: "rgba(26,111,212,.1)",
+                    border: "1px solid rgba(26,111,212,.2)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                >
+                  <Icon size={22} style={{ color: "var(--brand-blue)" }} />
+                </div>
+                <div>
+                  <div
+                    style={{
+                      fontFamily: '"DM Serif Display",serif',
+                      fontSize: "1.25rem",
+                      color: "var(--navy)",
+                    }}
+                  >
+                    {label}
+                  </div>
+                  <div
+                    style={{
+                      marginTop: "0.375rem",
+                      fontSize: "0.9375rem",
+                      lineHeight: 1.6,
+                      color: "#4B5563",
+                    }}
+                  >
+                    {desc}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <style>{`.partner-types-grid{grid-template-columns:1fr}@media(min-width:768px){.partner-types-grid{grid-template-columns:repeat(3,1fr)}}`}</style>
+
+        {/* Scrolling logo marquee */}
+        <div
+          className="fade-up"
+          style={{
+            animationDelay: "600ms",
+            marginTop: "3.5rem",
+            borderRadius: "1rem",
+            background: "#fff",
+            border: "1px solid rgba(11,31,58,.08)",
+            padding: "2rem 0",
+            overflow: "hidden",
+            minHeight: "15rem",
+          }}
+        >
+          <div
+            style={{
+              textAlign: "center",
+              fontSize: "0.75rem",
+              textTransform: "uppercase",
+              letterSpacing: "0.2em",
+              fontWeight: 600,
+              color: "rgba(11,31,58,.4)",
+              marginBottom: "1.5rem",
+            }}
+          >
+            Current Partners
+          </div>
+
+          {/* Fade edges */}
+          <div style={{ position: "relative" }}>
+            <div
+              style={{
+                position: "absolute",
+                left: 0,
+                top: 0,
+                bottom: 0,
+                width: "5rem",
+                background: "linear-gradient(to right, #fff, transparent)",
+                zIndex: 1,
+                pointerEvents: "none",
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                right: 0,
+                top: 0,
+                bottom: 0,
+                width: "5rem",
+                background: "linear-gradient(to left, #fff, transparent)",
+                zIndex: 1,
+                pointerEvents: "none",
+              }}
+            />
+            {/* Marquee: duplicate list for seamless loop */}
+            <div style={{ overflow: "hidden", padding: "0 2rem" }}>
+              <div className="partner-marquee-track">
+                {[...PARTNER_PLACEHOLDERS, ...PARTNER_PLACEHOLDERS].map(
+                  ({ name, logo }, idx) => (
+                    <img
+                      key={`${name}-${idx}`}
+                      src={logo}
+                      alt={name}
+                      style={{
+                        flexShrink: 0,
+                        height: "5rem",
+                        width: "auto",
+                        objectFit: "contain",
+                        display: "block",
+                      }}
+                    />
+                  ),
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA strip */}
+        <div
+          className="fade-up"
+          style={{
+            animationDelay: "750ms",
+            marginTop: "2.5rem",
+            borderRadius: "1rem",
+            background: "var(--navy)",
+            padding: "2rem 2.5rem",
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "1.5rem",
+          }}
+        >
+          <div>
+            <div
+              style={{
+                color: "var(--amber)",
+                fontSize: "0.75rem",
+                textTransform: "uppercase",
+                letterSpacing: "0.2em",
+                fontWeight: 600,
+              }}
+            >
+              Interested in partnering?
+            </div>
+            <div
+              style={{
+                marginTop: "0.375rem",
+                color: "#fff",
+                fontSize: "1.125rem",
+                fontWeight: 500,
+              }}
+            >
+              Let's build something meaningful together.
+            </div>
+          </div>
+          <Link
+            to="/contact"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              padding: "0.75rem 1.5rem",
+              borderRadius: "9999px",
+              background: "var(--amber)",
+              color: "var(--navy)",
+              fontWeight: 700,
+              textDecoration: "none",
+              whiteSpace: "nowrap",
+              transition: "opacity .2s",
+            }}
+            onMouseEnter={(e) =>
+              ((e.currentTarget as HTMLElement).style.opacity = ".9")
+            }
+            onMouseLeave={(e) =>
+              ((e.currentTarget as HTMLElement).style.opacity = "1")
+            }
+          >
+            Become a Partner <ArrowRight size={16} />
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Support Strip ────────────────────────────────────────────────────────────
 
 function SupportStrip() {
   const sectionRef = useScrollFadeUp();
